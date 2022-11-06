@@ -7,7 +7,12 @@
 body{
   overflow-y: hidden;
 }
-
+#me{
+  position: fixed;
+  color: white;
+  top:20px;
+  left: 20px;
+}
 .main {
   height: 100%;
   display: flex;

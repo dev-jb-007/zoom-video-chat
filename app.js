@@ -37,16 +37,19 @@ app.get('/:room', (req,res) =>{
 
 //making a connection between client and server (script.js file and this file)
 io.on('connection', (socket)=>{
+    let curr;
     socket.on('join-room', (roomId,userId) => {
         //console.log('We have joined room');
         socket.join(roomId);
-        
+        socket.on('user-joined',(data)=>{
+            curr=data.user;
+        })
         //tell our socket that we have a user connected if somone else does
         socket.to(roomId).emit('user-connected', userId);
 
         //recieve the msg sent from frontend
         socket.on('msg', (message) =>{
-            io.to(roomId).emit('createMsg', message);  //sending msg to te same roomid again
+            io.to(roomId).emit('createMsg', {text:message.text,user:message.user});  //sending msg to te same roomid again
         })
     })
    

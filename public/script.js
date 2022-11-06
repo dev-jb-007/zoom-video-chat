@@ -1,10 +1,14 @@
 const socket = io('/');
+let foo = prompt('Type here');
+  let bar = confirm('Confirm or deny');
+  console.log(foo, bar);
+  document.getElementById('me').innerHTML=foo;
 //creating video element
 const videoGrid = document.getElementById('videos-container');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
-
+socket.emit('user-joined',({user:foo}));
 
 
 //connecting to server from peerjs
@@ -93,7 +97,7 @@ const post = document.getElementById('btn');
 post.addEventListener('click', ()=>{
        if(chattext.value.length !== 0){
          //console.log(chattext.value);
-         socket.emit('msg', chattext.value); //send the msg from frontend
+         socket.emit('msg', {text:chattext.value,user:foo}); //send the msg from frontend
          chattext.value = '' ;
        }
 })
@@ -102,7 +106,7 @@ const ul = document.getElementById('chatlist');
 const li = document.createElement('li');
 socket.on('createMsg', (message) => {
   //console.log(`this is coming from server `, message)
-       $("ul").append(`<li class="message"><b>User </b><br/>${message}</li>`);
+       $("ul").append(`<li class="message"><b>${message.user} </b><br/>${message.text}</li>`);
        scrollToBottom();
 })
 
